@@ -14,24 +14,26 @@
     channel = "nightly";
     mold.enable = false;
     # targets = ["thumbv7em-none-eabihf"];
-    components = ["rustc" "cargo" "clippy" "rustfmt" "rust-analyzer" "rust-src"];
+    components = ["rustc" "cargo" "clippy" "rustfmt" "rust-analyzer" "rust-src" "llvm-tools-preview"];
   };
 
-  # https://devenv.sh/processes/
-  # processes.cargo-watch.exec = "cargo-watch";
-
-  # https://devenv.sh/services/
-  # services.postgres.enable = true;
-
   # https://devenv.sh/scripts/
-  scripts.build.exec = ''
-    cargo build
-  '';
+  scripts = {
+    build.exec = ''
+      cargo build
+    '';
+    build-qemu.exec = ''
+      cargo bootimage
+      qemu-system-x86_64 -drive format=raw,file=target/x86_64-rust_os/debug/bootimage-rust_os.bin
+    '';
+    run-qemu.exec = ''
+      qemu-system-x86_64 -drive format=raw,file=target/x86_64-rust_os/debug/bootimage-rust_os.bin
+    '';
+  };
 
-  # enterShell = ''
-  #   hello
-  #   git --version
-  # '';
+  packages = [
+    pkgs.cargo-bootimage
+  ];
 
   # https://devenv.sh/tasks/
   # tasks = {
