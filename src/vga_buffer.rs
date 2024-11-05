@@ -1,5 +1,3 @@
-use volatile::VolatilePtr;
-
 #[allow(dead_code)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(u8)]
@@ -44,7 +42,7 @@ const BUFFER_WIDTH: usize = 80;
 
 #[repr(transparent)]
 struct Buffer {
-    chars: [[VolatilePtr<'static, ScreenChar>; BUFFER_WIDTH]; BUFFER_HEIGHT],
+    chars: [[ScreenChar; BUFFER_WIDTH]; BUFFER_HEIGHT],
 }
 
 pub struct Writer {
@@ -76,10 +74,10 @@ impl Writer {
                 let col = self.column_position;
 
                 let color_code = self.color_code;
-                self.buffer.chars[row][col].write(ScreenChar {
+                self.buffer.chars[row][col] = ScreenChar {
                     ascii_character: byte,
                     color_code,
-                });
+                };
                 self.column_position += 1;
             }
         }
@@ -98,5 +96,5 @@ pub fn print_test() {
     };
 
     writer.write_byte(b'H');
-    //writer.write_string("ellow World!");
+    writer.write_string("ellow World!");
 }
