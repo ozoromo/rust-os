@@ -9,7 +9,13 @@
   # env.GREET = "devenv";
 
   # https://devenv.sh/languages/
-  languages.rust.enable = true;
+  languages.rust = {
+    enable = true;
+    channel = "nightly";
+    mold.enable = false;
+    # targets = ["thumbv7em-none-eabihf"];
+    components = ["rustc" "cargo" "clippy" "rustfmt" "rust-analyzer" "rust-src"];
+  };
 
   # https://devenv.sh/processes/
   # processes.cargo-watch.exec = "cargo-watch";
@@ -18,9 +24,9 @@
   # services.postgres.enable = true;
 
   # https://devenv.sh/scripts/
-  # scripts.hello.exec = ''
-  #   echo hello from $GREET
-  # '';
+  scripts.build.exec = ''
+    cargo build
+  '';
 
   # enterShell = ''
   #   hello
