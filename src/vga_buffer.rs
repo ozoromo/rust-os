@@ -142,3 +142,10 @@ impl Writer {
         }
     }
 }
+
+#[test_case]
+fn test_println_many() {
+    for _ in 0..200 {
+        println!("Vga output large linecount test")
+    }
+}
