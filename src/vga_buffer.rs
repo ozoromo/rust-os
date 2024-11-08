@@ -141,6 +141,12 @@ impl Writer {
             self.buffer.chars[row][col].write(blank)
         }
     }
+
+    pub fn clear_screen(&mut self) {
+        for i in 0..BUFFER_HEIGHT {
+            self.clear_row(i);
+        }
+    }
 }
 
 #[test_case]
